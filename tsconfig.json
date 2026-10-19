@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", "module": "CommonJS", "moduleResolution": "Node",
+    "strict": true, "noUncheckedIndexedAccess": true, "exactOptionalPropertyTypes": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"], "skipLibCheck": true,
+    "rootDir": "src", "outDir": ".build", "newLine": "lf"
+  },
+  "include": ["src/**/*.ts"]
+}
