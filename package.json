@@ -1,0 +1,55 @@
+{
+  "name": "dsh-mo",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "description": "Agent 干活五秒后，开始给自己涨薪。DSH 摸鱼时薪计量器。",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "docs/COMPATIBILITY.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "check": "npm run typecheck && npm test",
+    "preview": "node scripts/preview.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1122414/dsh-mo.git"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "moyu",
+    "salary",
+    "time-tracking"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-connection"
+      ]
+    }
+  }
+}
