@@ -125,7 +125,7 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
   const stopDrag = (event: PointerEvent) => {
     if (drag && event.pointerId === drag.pointerId) drag = null;
   };
-  shadow.addEventListener('pointerdown', startDrag, true);
+  shadow.addEventListener('pointerdown', startDrag as EventListener, true);
   window.addEventListener('pointermove', moveDrag, true);
   window.addEventListener('pointerup', stopDrag, true);
   window.addEventListener('pointercancel', stopDrag, true);
@@ -157,6 +157,6 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
       }
       get('mini-value').textContent = `摸鱼 ${money(v.value)}`;
     },
-    dispose() { window.removeEventListener('resize', resized); window.removeEventListener('pointermove', moveDrag, true); window.removeEventListener('pointerup', stopDrag, true); window.removeEventListener('pointercancel', stopDrag, true); shadow.removeEventListener('pointerdown', startDrag, true); host.remove(); },
+    dispose() { window.removeEventListener('resize', resized); window.removeEventListener('pointermove', moveDrag, true); window.removeEventListener('pointerup', stopDrag, true); window.removeEventListener('pointercancel', stopDrag, true); shadow.removeEventListener('pointerdown', startDrag as EventListener, true); host.remove(); },
   };
 }
