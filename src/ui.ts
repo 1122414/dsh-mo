@@ -20,7 +20,7 @@ export function mountView(settings: Settings, actions: {
 :host{font-family:ui-monospace,Consolas,"Noto Sans SC",sans-serif;color:#082d78;font-size:13px;line-height:1.45}
 *{box-sizing:border-box}button,input{font:inherit}button{cursor:pointer;color:inherit}
 .card{width:380px;max-width:calc(100vw - 18px);padding:7px;border:3px solid #082d78;border-radius:16px;background:#d8f3ff;box-shadow:0 0 0 4px #8db9f6,0 9px 0 #5d83cf,0 18px 32px #082d7833}
-header{display:flex;align-items:center;gap:9px;padding:5px 8px 10px;user-select:none}
+header{display:flex;align-items:center;gap:9px;padding:5px 8px 10px;user-select:none;cursor:grab;touch-action:none}.status,.scene{cursor:grab;touch-action:none;user-select:none}
 .grip{width:30px;height:30px;display:grid;grid-template-columns:repeat(3,5px);grid-template-rows:repeat(3,5px);gap:3px;align-content:center;justify-content:center;background:#e8f8ff;border:2px solid #082d78;box-shadow:3px 3px 0 #6da2eb;border-radius:4px;cursor:grab;touch-action:none;flex:none}
 .grip i{width:5px;height:5px;background:#1767df;border-radius:1px}.brand{flex:1;font-weight:1000;font-size:18px;letter-spacing:2px}
 header button,button:not(.primary){border:2px solid #082d78;background:#f5fcff;box-shadow:2px 3px 0 #789fe0;border-radius:5px;padding:5px 9px;font-weight:900;color:#082d78}
@@ -95,30 +95,40 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
       get('error').textContent = ''; page('home');
     } catch (e) { get('error').textContent = e instanceof Error ? e.message : String(e); }
   };
-  // Drag from any non-control area in the header, status line, or character banner.
-  let drag: { x: number; y: number; left: number; top: number } | null = null;
+  // Listen at the ShadowRoot boundary and track on window: this works even when
+  // Electron retargets events across the shadow host or the pointer leaves the widget.
+  let drag: { pointerId: number; x: number; y: number; left: number; top: number } | null = null;
   const clamp = (left: number, top: number) => {
-    host.style.right = 'auto'; host.style.bottom = 'auto';
-    host.style.left = Math.max(8, Math.min(innerWidth - host.offsetWidth - 8, left)) + 'px';
-    host.style.top = Math.max(8, Math.min(innerHeight - host.offsetHeight - 8, top)) + 'px';
+    host.style.right = 'auto';
+    host.style.bottom = 'auto';
+    host.style.left = Math.max(8, Math.min(window.innerWidth - host.offsetWidth - 8, left)) + 'px';
+    host.style.top = Math.max(8, Math.min(window.innerHeight - host.offsetHeight - 8, top)) + 'px';
   };
-  const startDrag = (e: PointerEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('button, input, label, form, a')) return;
-    e.preventDefault();
-    const r = host.getBoundingClientRect();
-    drag = { x: e.clientX, y: e.clientY, left: r.left, top: r.top };
-    host.setPointerCapture(e.pointerId);
+  const header = shadow.querySelector<HTMLElement>('header')!;
+  const status = get('state');
+  const scene = shadow.querySelector<HTMLElement>('.scene')!;
+  const startDrag = (event: PointerEvent) => {
+    if (event.button !== 0 || drag) return;
+    const path = event.composedPath();
+    const inDragSurface = path.includes(header) || path.includes(status) || path.includes(scene);
+    if (!inDragSurface) return;
+    if (path.some(item => item instanceof Element && item.matches('button, input, label, form, a'))) return;
+    event.preventDefault();
+    const rect = host.getBoundingClientRect();
+    drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
   };
-  const moveDrag = (e: PointerEvent) => {
-    if (drag) clamp(drag.left + e.clientX - drag.x, drag.top + e.clientY - drag.y);
+  const moveDrag = (event: PointerEvent) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    event.preventDefault();
+    clamp(drag.left + event.clientX - drag.x, drag.top + event.clientY - drag.y);
   };
-  const stopDrag = () => { drag = null; };
-  const dragSurfaces: HTMLElement[] = [shadow.querySelector<HTMLElement>('header')!, get('state'), shadow.querySelector<HTMLElement>('.scene')!];
-  for (const surface of dragSurfaces) surface.addEventListener('pointerdown', startDrag);
-  host.addEventListener('pointermove', moveDrag);
-  host.addEventListener('pointerup', stopDrag);
-  host.addEventListener('pointercancel', stopDrag);
+  const stopDrag = (event: PointerEvent) => {
+    if (drag && event.pointerId === drag.pointerId) drag = null;
+  };
+  shadow.addEventListener('pointerdown', startDrag, true);
+  window.addEventListener('pointermove', moveDrag, true);
+  window.addEventListener('pointerup', stopDrag, true);
+  window.addEventListener('pointercancel', stopDrag, true);
   get('close').onclick = () => { card.hidden = true; get('reopen').hidden = false; };
   const resized = () => {
     if (host.style.left) {
@@ -147,6 +157,6 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
       }
       get('mini-value').textContent = `摸鱼 ${money(v.value)}`;
     },
-    dispose() { window.removeEventListener('resize', resized); host.remove(); },
+    dispose() { window.removeEventListener('resize', resized); window.removeEventListener('pointermove', moveDrag, true); window.removeEventListener('pointerup', stopDrag, true); window.removeEventListener('pointercancel', stopDrag, true); shadow.removeEventListener('pointerdown', startDrag, true); host.remove(); },
   };
 }
