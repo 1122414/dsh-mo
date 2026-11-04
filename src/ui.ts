@@ -19,27 +19,27 @@ export function mountView(settings: Settings, actions: {
   shadow.innerHTML = `<style>
 :host{font-family:ui-monospace,Consolas,"Noto Sans SC",sans-serif;color:#082d78;font-size:13px;line-height:1.45}
 *{box-sizing:border-box}button,input{font:inherit}button{cursor:pointer;color:inherit}
-.card{width:520px;max-width:calc(100vw - 18px);padding:10px;border:4px solid #082d78;border-radius:16px;background:#d8f3ff;box-shadow:0 0 0 4px #8db9f6,0 9px 0 #5d83cf,0 18px 32px #082d7833}
+.card{width:380px;max-width:calc(100vw - 18px);padding:7px;border:3px solid #082d78;border-radius:16px;background:#d8f3ff;box-shadow:0 0 0 4px #8db9f6,0 9px 0 #5d83cf,0 18px 32px #082d7833}
 header{display:flex;align-items:center;gap:9px;padding:5px 8px 10px;user-select:none}
 .grip{width:30px;height:30px;display:grid;grid-template-columns:repeat(3,5px);grid-template-rows:repeat(3,5px);gap:3px;align-content:center;justify-content:center;background:#e8f8ff;border:2px solid #082d78;box-shadow:3px 3px 0 #6da2eb;border-radius:4px;cursor:grab;touch-action:none;flex:none}
 .grip i{width:5px;height:5px;background:#1767df;border-radius:1px}.brand{flex:1;font-weight:1000;font-size:18px;letter-spacing:2px}
 header button,button:not(.primary){border:2px solid #082d78;background:#f5fcff;box-shadow:2px 3px 0 #789fe0;border-radius:5px;padding:5px 9px;font-weight:900;color:#082d78}
-.scene{height:175px;position:relative;overflow:hidden;border:3px solid #082d78;border-radius:10px;background:linear-gradient(#57c7ff 0%,#a9ecff 63%,#eafcff 64%,#58c9f3 65%,#1673d9 100%);margin-bottom:12px}
+.scene{height:132px;position:relative;overflow:hidden;border:3px solid #082d78;border-radius:10px;background:linear-gradient(#57c7ff 0%,#a9ecff 63%,#eafcff 64%,#58c9f3 65%,#1673d9 100%);margin-bottom:12px}
 .scene:after{content:"";position:absolute;bottom:0;left:0;right:0;height:30px;background:repeating-linear-gradient(0deg,#1675db 0 8px,#42b9f5 8px 15px,#dffaff 15px 20px)}
-.mascot{position:absolute;width:245px;height:168px;left:50%;bottom:4px;transform:translateX(-50%);z-index:1;filter:drop-shadow(3px 4px 0 #0a3b91)}
-.bubble{position:absolute;right:14px;top:14px;padding:7px 10px;background:#fff7d4;border:3px solid #082d78;border-radius:7px;font-weight:1000;font-size:16px;z-index:2;box-shadow:3px 3px 0 #e8b82d}
-.label{font-size:11px;color:#2755a0;font-weight:900}.amount{font-size:36px;line-height:1.15;font-weight:1000;color:#082d78;margin:4px 0 10px}
-.gain{background:#e1fff4;border:3px solid #1767c9;border-radius:7px;padding:10px;display:flex;align-items:center;justify-content:space-between;gap:6px;box-shadow:inset 0 -5px 0 #c7f1e4,3px 4px 0 #8ab4ed}.gain b{font-size:22px}.gain small{color:#2755a0;display:block}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.grid>div{background:#f7fdff;border:3px solid #1767c9;border-radius:7px;box-shadow:inset 0 -5px 0 #d1edff,3px 4px 0 #8ab4ed;padding:9px}.grid b{display:block;font-size:17px;color:#082d78}
+.mascot{position:absolute;width:185px;height:127px;left:50%;bottom:4px;transform:translateX(-50%);z-index:1;filter:drop-shadow(3px 4px 0 #0a3b91)}
+.bubble{position:absolute;right:14px;top:14px;padding:7px 10px;background:#fff7d4;border:3px solid #082d78;border-radius:7px;font-weight:1000;font-size:12px;z-index:2;box-shadow:3px 3px 0 #e8b82d}
+.label{font-size:11px;color:#2755a0;font-weight:900}.amount{font-size:29px;line-height:1.15;font-weight:1000;color:#082d78;margin:4px 0 10px}
+.gain{background:#e1fff4;border:3px solid #1767c9;border-radius:7px;padding:7px;display:flex;align-items:center;justify-content:space-between;gap:6px;box-shadow:inset 0 -5px 0 #c7f1e4,3px 4px 0 #8ab4ed}.gain b{font-size:18px}.gain small{color:#2755a0;display:block}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}.grid>div{background:#f7fdff;border:3px solid #1767c9;border-radius:7px;box-shadow:inset 0 -5px 0 #d1edff,3px 4px 0 #8ab4ed;padding:7px}.grid b{display:block;font-size:14px;color:#082d78}
 .note{text-align:center;color:#2755a0;font-size:10px;font-weight:800;margin:10px 0 2px}.warning{font-size:11px;color:#7e3a13;background:#fff1c7;padding:7px 9px;border:2px solid #d49b25;margin:7px 0;white-space:pre-wrap}
-.actions{display:flex;gap:8px;margin-top:14px}.primary{background:linear-gradient(#ffec7a,#ffc82d);color:#082d78;border:3px solid #082d78;border-radius:8px;padding:10px 18px;font-weight:1000;font-size:18px;box-shadow:0 5px 0 #9b6e17}.stretch{flex:1}
+.actions{display:flex;gap:6px;margin-top:10px}.primary{background:linear-gradient(#ffec7a,#ffc82d);color:#082d78;border:3px solid #082d78;border-radius:8px;padding:8px 14px;font-weight:1000;font-size:15px;box-shadow:0 5px 0 #9b6e17}.stretch{flex:1}
 section[hidden],[hidden]{display:none!important}h3{font-size:14px;margin:0 0 10px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:11px;color:#2755a0;font-weight:800}
 input[type=number],input[type=time]{width:100%;padding:8px;margin-top:4px;border:2px solid #7299d5;border-radius:4px;background:white;color:#092d79}
 fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5px}.days{display:flex;gap:8px;flex-wrap:wrap}.days label{display:flex;gap:2px;align-items:center}.error{color:#9c3027;font-size:12px;margin:8px 0}
 .form-title{display:flex;align-items:center;justify-content:space-between}table{width:100%;font-size:11px;border-collapse:collapse}td,th{text-align:right;padding:5px;border-bottom:1px solid #9ab8e9}td:first-child,th:first-child{text-align:left}.danger{color:#a22}
 .collapsed{display:flex;align-items:center;gap:9px;min-height:54px;padding:7px 13px 7px 8px;background:linear-gradient(#fff,#e0f7ff);border:3px solid #082d78;border-radius:8px;box-shadow:0 4px 0 #6d9be1,0 8px 18px #092d7933;font-weight:1000;touch-action:none}
 .collapsed .grip{width:32px;height:32px}.collapsed strong{font-size:16px}
-@media(max-width:540px){.card{width:calc(100vw - 18px);padding:7px}.scene{height:150px}.mascot{width:210px;height:145px}.amount{font-size:30px}}
+@media(max-width:540px){.card{width:calc(100vw - 18px);padding:6px}.scene{height:120px}.mascot{width:175px;height:120px}.amount{font-size:26px}}
 @media(prefers-color-scheme:dark){.card{filter:brightness(.92) saturate(1.08)}}
 </style>
 <div class="card">
@@ -95,27 +95,30 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
       get('error').textContent = ''; page('home');
     } catch (e) { get('error').textContent = e instanceof Error ? e.message : String(e); }
   };
-  // Both the expanded grip and the collapsed grip are draggable.
+  // Drag from any non-control area in the header, status line, or character banner.
   let drag: { x: number; y: number; left: number; top: number } | null = null;
   const clamp = (left: number, top: number) => {
     host.style.right = 'auto'; host.style.bottom = 'auto';
     host.style.left = Math.max(8, Math.min(innerWidth - host.offsetWidth - 8, left)) + 'px';
     host.style.top = Math.max(8, Math.min(innerHeight - host.offsetHeight - 8, top)) + 'px';
   };
-  for (const handle of [get('drag-expanded'), get('drag-collapsed')]) {
-    handle.addEventListener('pointerdown', e => {
-      e.preventDefault();
-      const r = host.getBoundingClientRect();
-      drag = { x: e.clientX, y: e.clientY, left: r.left, top: r.top };
-      handle.setPointerCapture(e.pointerId);
-    });
-    handle.addEventListener('pointermove', e => {
-      if (drag) clamp(drag.left + e.clientX - drag.x, drag.top + e.clientY - drag.y);
-    });
-    const stop = () => { drag = null; };
-    handle.addEventListener('pointerup', stop);
-    handle.addEventListener('pointercancel', stop);
-  }
+  const startDrag = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('button, input, label, form, a')) return;
+    e.preventDefault();
+    const r = host.getBoundingClientRect();
+    drag = { x: e.clientX, y: e.clientY, left: r.left, top: r.top };
+    host.setPointerCapture(e.pointerId);
+  };
+  const moveDrag = (e: PointerEvent) => {
+    if (drag) clamp(drag.left + e.clientX - drag.x, drag.top + e.clientY - drag.y);
+  };
+  const stopDrag = () => { drag = null; };
+  const dragSurfaces = [shadow.querySelector('header')!, get('state'), shadow.querySelector('.scene')!];
+  for (const surface of dragSurfaces) surface.addEventListener('pointerdown', startDrag);
+  host.addEventListener('pointermove', moveDrag);
+  host.addEventListener('pointerup', stopDrag);
+  host.addEventListener('pointercancel', stopDrag);
   get('close').onclick = () => { card.hidden = true; get('reopen').hidden = false; };
   const resized = () => {
     if (host.style.left) {
