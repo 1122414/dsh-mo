@@ -16,7 +16,7 @@ export function mountView(settings: Settings, actions: {
   host.id = 'dsh-mo-widget';
   host.style.cssText = 'position:fixed;right:24px;bottom:24px;z-index:1000;max-width:calc(100vw - 24px)';
   const shadow = host.attachShadow({ mode: 'open' });
-<style>
+  shadow.innerHTML = `<style>
 :host{font-family:ui-monospace,Consolas,"Noto Sans SC",sans-serif;color:#082d78;font-size:13px;line-height:1.45}
 *{box-sizing:border-box}button,input{font:inherit}button{cursor:pointer;color:inherit}
 .card{width:520px;max-width:calc(100vw - 18px);padding:10px;border:4px solid #082d78;border-radius:16px;background:#d8f3ff;box-shadow:0 0 0 4px #8db9f6,0 9px 0 #5d83cf,0 18px 32px #082d7833}
@@ -83,6 +83,7 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
   const card = shadow.querySelector<HTMLElement>('.card')!;
   get('collapse').onclick = () => { card.hidden = true; get('reopen').hidden = false; };
   get('reopen').onclick = () => { card.hidden = false; get('reopen').hidden = true; };
+  get('drag-collapsed').addEventListener('click', e => e.stopPropagation());
   form.onsubmit = event => {
     event.preventDefault();
     const data = new FormData(form);
