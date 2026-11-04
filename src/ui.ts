@@ -114,7 +114,7 @@ fieldset{border:0;padding:0;margin:10px 0}legend{font-size:11px;margin-bottom:5p
     if (drag) clamp(drag.left + e.clientX - drag.x, drag.top + e.clientY - drag.y);
   };
   const stopDrag = () => { drag = null; };
-  const dragSurfaces = [shadow.querySelector('header')!, get('state'), shadow.querySelector('.scene')!];
+  const dragSurfaces: HTMLElement[] = [shadow.querySelector<HTMLElement>('header')!, get('state'), shadow.querySelector<HTMLElement>('.scene')!];
   for (const surface of dragSurfaces) surface.addEventListener('pointerdown', startDrag);
   host.addEventListener('pointermove', moveDrag);
   host.addEventListener('pointerup', stopDrag);
